@@ -9,6 +9,24 @@ const PORT=8000;
 // Middleware to parse JSON bodies
 app.use(express.urlencoded({extended: false}));
 
+//custom made middleware
+app.use((req, res, next)=>{
+    fs.appendFile("log.txt", 
+    `\n${Date.now}: ${req.method}: ${req.path}`, (err, data)=>{
+        next();
+    });
+    // console.log("Hello from middleware 1");
+    // return res.json({msg: "Hello from middleware 1"});
+    // next();
+})
+
+app.use((req, res, next)=>{
+    console.log("Hello from middleware 2");
+    res.end("Hello");
+    next();
+});
+
+
 
 //ROUTES
 app.get("/users", (req, res) => {
